@@ -1,0 +1,14 @@
+# Create .gitignore to protect your API key
+echo "# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# API Keys (IMPORTANT!)
+config.py
+
+# IDE
+.vscode/
+
+# Optional: Exclude result files
+results/*.txt" > .gitignore
