@@ -44,7 +44,8 @@ class GooglePlacesAPI:
             # Prepare request body for new API
             request_body = {
                 "textQuery": query,
-                "maxResultCount": 20  # API maximum per request
+                "maxResultCount": 20  # API maximum per request (by official documentation)
+                                        # important, no change! Otherwise crash everything
             }
             
             # Add pagination token if available
@@ -59,6 +60,7 @@ class GooglePlacesAPI:
             
             try:
                 # Make API request
+                # Note that page_token is used for locating the page on where the data is requested
                 response = requests.post(self.base_url, json=request_body, headers=headers)
                 data = response.json()
                 
@@ -92,7 +94,9 @@ class GooglePlacesAPI:
                 if verbose:
                     print(f"Page {page_count}: Found {page_results} results (Total: {len(all_results)})")
                 
-                # Check for next page token
+                # check for next page token
+                # if there is more pages, next_page_token will be set to be not None
+                # this way the outer while loop will continue
                 next_page_token = data.get('nextPageToken')
                 if not next_page_token:
                     if verbose:
