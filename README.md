@@ -1,22 +1,37 @@
 # GoogleSearchingToTxts
 
-This project, when running by CLI, will prompt user for a keyword, and search the result with the help from google map api. After that, all results are placed in a txt file.
+This project is a CLI tool that prompts users for a keyword and searches for results using the Google Maps API. All results are saved to a text file for easy access and analysis.
 
-This project originates from my bro majoring in Bussiness who would like a convinient way to gather potential customer infomation. This is just a small tool for now that is probably useful in the future. 
+This project originated from one my bro, who is majoring in Business and wanted a convenient way to gather potential customer information. This is a small but practical tool that will probably be useful in the future. The user interface and more functionalities are on the way (or never).
 
-This project plays around the functionality brought by google place api(new)
-For new/come-back user, create or find ur own api key and place it in config.py
-Then, run main.py from CLI, follow the instructions. Personally recommand the enhanced search.
+This project leverages the functionality of the Google Places API (new version). For new or returning users, create or find your own API key and place it in `config.py`. Then run `main.py` from the CLI and follow the instructions. I personally recommend using the enhanced search feature.
 
-# How to create my own api key?
-Portal to Google cloud console: https://console.cloud.google.com/ (Yes u have to logged in with ur own account)
-User will have to create his/her own Google cloud project at first for now.
+## Setup Instructions
 
+1. **Get your API key**: Create or find your own Google Places API key
+2. **Configure the project**: 
+   - Copy `config_template.py` to `config.py`
+   - Replace the placeholder with your actual API key in `config.py`
+3. **Run the application**: Execute `main.py` from the CLI and follow the instructions
+4. **Recommendation**: Use the enhanced search feature for better results. (However, this will consume the free API call limit at 6x speed.)
 
-# Notice: API limit
-For more information, please check https://developers.google.com/maps/billing-and-pricing/overview?_gl=1*1vbj1gz*_up*MQ..*_ga*MTMwNTUxNTcxOC4xNzUxMjEyMTI4*_ga_NRWSTWS78N*czE3NTEyMTIxMjckbzEkZzAkdDE3NTEyMTIxNzMkajE0JGwwJGgw
+## How to Create Your Own API Key
 
-By the date of 2025/June/29, the user can query free api calls by Google policy, but with a limit. For the real limit, please check the website above. The user is recommanded to set a save-protect for api call limits in the settings page in the Google cloud console.
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/) (you need to be logged in with your Google account)
+2. Create your own Google Cloud project first
+3. Enable the Google Places API(new) for your project
+4. Generate an API key and copy it to your `config.py` file. (Note: it's actually `config_template.py` if pulling for the first time)
+
+## API Usage Notice
+
+**Important**: There are usage limits for the Google Places API.
+
+For detailed information about pricing and limits, please check: 
+https://developers.google.com/maps/billing-and-pricing/overview
+
+As of June 29, 2025, users can make free API calls under Google's policy, but with limitations. For the exact limits, please check the website above. 
+
+**Recommendation**: Set up billing alerts or usage limits in the Google Cloud Console settings page to protect against unexpected charges.
 
 
 
