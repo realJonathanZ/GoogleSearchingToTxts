@@ -1,5 +1,5 @@
-from google_places_api import GooglePlacesAPI
-from file_manager import FileManager
+from apis.google_places.google_places_api import GooglePlacesAPI
+from core.file_manager import FileManager
 
 def main():
     print("=" * 50)
