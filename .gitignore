@@ -1,14 +1,32 @@
-# Create .gitignore to protect your API key
-echo "# Python
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 
-# API Keys (IMPORTANT!)
+# Environment and API Keys (IMPORTANT!)
+.env
 config.py
+config_local.py
+**/config.py
+**/config_local.py
+
+# Keep template but exclude actual config
+!config_template.py
 
 # IDE
 .vscode/
+.idea/
+*.swp
+*.swo
 
 # Optional: Exclude result files
-results/*.txt" > .gitignore
+results/*.txt
+results/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
