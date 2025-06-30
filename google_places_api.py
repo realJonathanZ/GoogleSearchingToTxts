@@ -3,11 +3,13 @@
 import requests
 import time
 from config import GOOGLE_PLACES_API_KEY, MAX_RESULTS
+from variation_determination import VariationDetermination
 
 class GooglePlacesAPI:
     def __init__(self):
         self.api_key = GOOGLE_PLACES_API_KEY
         self.base_url = "https://places.googleapis.com/v1/places:searchText"
+        self.variation_generator = VariationDetermination()
     
     def search_places(self, query):
         """Search for places using Google Places API (New) with pagination"""
@@ -93,8 +95,8 @@ class GooglePlacesAPI:
         all_results = []
         seen_names = set()  # To avoid duplicates
         
-        # Generate search variations
-        variations = self.generate_search_variations(base_query)
+        # Generate search variations using the variation determination module
+        variations = self.variation_generator.generate_search_variations(base_query)
         
         print(f"Base search: {base_query}")
         print(f"Will search {len(variations)} variations to get more results...")
@@ -129,49 +131,6 @@ class GooglePlacesAPI:
         
         print(f"\n=== FINAL: Found {len(all_results)} unique results ===")
         return all_results[:MAX_RESULTS]  # Limit to MAX_RESULTS
-    
-    def generate_search_variations(self, base_query):
-        """Generate search variations based on the base query"""
-        variations = [base_query]  # Start with original
-        
-        # Common industry terms for textile/spinning mills
-        if 'spinning' in base_query.lower() or 'mill' in base_query.lower():
-            mill_terms = [
-                'textile mill', 'cotton mill', 'yarn mill', 'spinning mill',
-                'fabric mill', 'weaving mill', 'spinning factory', 
-                'textile factory', 'cotton spinning', 'yarn manufacturing'
-            ]
-            
-            # Extract location from original query
-            location = ''
-            if 'pakistan' in base_query.lower():
-                location = ' Pakistan'
-            elif 'karachi' in base_query.lower():
-                location = ' Karachi'
-            elif 'lahore' in base_query.lower():
-                location = ' Lahore'
-            
-            # Add variations with location
-            for term in mill_terms:
-                variations.append(f"{term}{location}")
-        
-        # General business variations
-        else:
-            # Add plurals and related terms
-            if not base_query.endswith('s'):
-                variations.append(f"{base_query}s")
-            
-            # Add "business", "company", "shop" variations
-            base_terms = [f"{base_query} business", f"{base_query} company", f"{base_query} shop"]
-            variations.extend(base_terms)
-        
-        # Remove duplicates and return first 6 variations
-        unique_variations = []
-        for var in variations:
-            if var not in unique_variations:
-                unique_variations.append(var)
-        
-        return unique_variations[:6]  # Limit to 6 searches max
     
     def search_places_single(self, query):
         """Single search without variations (renamed from search_places)"""
@@ -315,4 +274,3 @@ class GooglePlacesAPI:
         
         return all_results
 
-    # ...existing code...

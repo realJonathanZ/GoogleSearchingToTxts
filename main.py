@@ -36,11 +36,11 @@ def main():
             
             if choice == '1':
                 # Simple search mode - use original search_places method
-                print("\n🔍 Simple search mode: Single search query...")
+                print("\n Simple search mode: Single search query...")
                 results = places_api.search_places(keyword)
             else:
                 # Enhanced search mode - use variation search
-                print("\n🔍 Enhanced search mode: Using multiple search variations...")
+                print("\n Enhanced search mode: Using multiple search variations...")
                 results = places_api.search_with_variations(keyword)
             
             if not results:
@@ -51,9 +51,9 @@ def main():
             file_path = file_manager.save_results_to_file(keyword, results)
             
             if file_path:
-                print(f"✓ Successfully saved {len(results)} results!")
+                print(f"Successfully saved {len(results)} results!")
             else:
-                print("✗ Failed to save results.")
+                print("Failed to save results.")
                 
         except KeyboardInterrupt:
             print("\nOperation cancelled by user.")
