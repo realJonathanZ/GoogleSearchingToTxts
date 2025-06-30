@@ -333,53 +333,66 @@ class VariationDetermination:
         """
         Extract location information from a search query string.
         
-        Searches for Pakistani city names and country name within the query string
-        and returns the formatted location string. Case-insensitive matching is
-        performed against a predefined list of locations.
+        Searches for common location indicators and patterns within the query string.
+        This method uses a simplified approach focusing on location keywords and
+        capitalized words that likely represent place names.
         
         Args:
             query (str): The search query to analyze for location information.
                         Can contain any text. Empty strings will return empty location.
             
         Returns:
-            str: Formatted location string with leading space (e.g., " Pakistan", " Karachi").
-                Returns empty string if no location is detected.
+            str: Formatted location string with leading space (e.g., " Downtown", " Chicago").
+                Returns empty string if no location pattern is detected.
                 Returns the first location found if multiple locations are present.
                 
-        Supported Locations:
-            - Pakistan (country level)
-            - Major cities: Karachi, Lahore, Islamabad, Faisalabad, Rawalpindi,
-              Multan, Peshawar, Quetta, Sialkot
-              
         Example:
             >>> generator = VariationDetermination()
-            >>> location = generator._extract_location("spinning mill in Karachi")
+            >>> location = generator._extract_location("spinning mill Chicago")
             >>> print(repr(location))  # Shows the leading space
-            ' Karachi'
+            ' Chicago'
+            >>> location = generator._extract_location("restaurant downtown")
+            >>> print(repr(location))
+            ' Downtown'
             >>> location = generator._extract_location("textile business")
             >>> print(repr(location))
             ''
         """
         location = ''
-        query_lower = query.lower()
+        query_lower = query.lower().strip()
+
+        # If there is any word matches the location keywords, return it in title case
+        location_keywords = [
+            'downtown', 'city center', 'center', 'district', 'area', 'zone',
+            'mall', 'plaza', 'square', 'market', 'industrial area', 'business district',
+            'uptown', 'midtown', 'suburb', 'neighborhood', 'quarters', 'sector'
+        ]
         
-        # Common locations - can be expanded
-        location_mapping = {
-            'pakistan': ' Pakistan',
-            'karachi': ' Karachi',
-            'lahore': ' Lahore',
-            'islamabad': ' Islamabad',
-            'faisalabad': ' Faisalabad',
-            'rawalpindi': ' Rawalpindi',
-            'multan': ' Multan',
-            'peshawar': ' Peshawar',
-            'quetta': ' Quetta',
-            'sialkot': ' Sialkot'
-        }
+        for keyword in location_keywords:
+            if keyword in query_lower:
+                return f" {keyword.title()}"
         
-        for location_key, location_value in location_mapping.items():
-            if location_key in query_lower:
-                return location_value
+        # try to find possible location with capitalized words now
+        words = query_lower.split()
+        original_words = query.split()
+        
+        for i, word in enumerate(words):
+            # iterate each original word..
+            if i < len(original_words) and len(original_words[i]) > 2:
+                original_word = original_words[i]
+                
+                # if target exists, must start with capital and not be a common business word
+                if original_word[0].isupper():
+                    # Hard coded business word
+                    business_words = [
+                        'mill', 'factory', 'company', 'business', 'shop', 'store', 
+                        'restaurant', 'cafe', 'service', 'center', 'industry',
+                        'manufacturing', 'textile', 'cotton', 'spinning', 'fabric'
+                    ]
+                    # if detected any business word, must skip it.
+                    if word not in business_words:
+                        # Otherwise return the original word starting with capital letter.
+                        return f" {original_word}"
         
         return location
     

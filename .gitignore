@@ -20,7 +20,7 @@ config_local.py
 *.swp
 *.swo
 
-# Optional: Exclude result files
+# exclude result files
 results/*.txt
 results/
 
